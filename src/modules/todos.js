@@ -14,7 +14,7 @@ export const changeInput = input => ({
 });
 
 let id = 3; //insert가 호출될 때마다 1씩 더해집니다.
-export const inssert = text => ({
+export const insert = text => ({
 	type : INSERT,
 	todo : {
 		id : id ++,
