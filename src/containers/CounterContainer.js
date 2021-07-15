@@ -9,22 +9,14 @@ const CounterContainer = ({number, increase, decrease}) => {
     );
 };
 
-const mapStateToProps  = state => ({
-    number : state.counter.number,
-});
-
-const mapDispatchToprops = dispatch => ({
-    //임시 함수
-    increase : () => {
-        dispatch(increase());
-    },
-    decrease : () => {
-        dispatch(decrease());
-      },
-
-});
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToprops,
+    state => ({
+        number:state.counter.number,
+
+    }),
+    dispatch => ({
+        increase:() => dispatch(increase()),
+        decrease:() =>dispatch(decrease()),
+    }),
 )(CounterContainer);
