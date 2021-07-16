@@ -1,4 +1,6 @@
 import {createAction, handleActions} from 'redux-action';
+import produce from 'immer';
+
 /*액션 타입 만들기*/
 
 //액션 타입 정의하기
@@ -23,24 +25,43 @@ export const toggle = createAction(TOGGLE, id => id);
 
 export const remove = createAction(REMOVE, id => id);
 
+const initialState = {
+	input: '',
+	todos: [
+	  {
+		id: 1,
+		text: '리덕스 기초 배우기',
+		done: true,
+	  },
+	  {
+		id: 2,
+		text: '리액트와 리덕스 사용하기',
+		done: false,
+	  },
+	],
+  };
+
 const todos = handleActions(
 	{
-		[CHANGE_INPUT]:(state, action) => ({...state, input : action.payload}),
-		[INSERT]:(state,action) =>({
+		[CHANGE_INPUT]:(state, {payload:input}) => 
+			produce({...state, input }), //비구조화 할당 문법 적용
+
+		[INSERT]:(state,{payload:todo}) =>({
 			...state,
-			todos: state.todos.concat(action.payload),
+			todos: state.todos.concat(todo),
 		}),
-		[TOGGLE]:(state, action) => ({
+		[TOGGLE]:(state, {payload:id}) => ({
 			...state,
 			todos:state.todos.map(todo=>
-				todo.id === action.payload ? {...todo, done : !todo.done} : todo,
+				todo.id === id ? {...todo, done : !todo.done} : todo,
 			),
 		}),
-		[REMOVE]:(state, action) => ({
+		[REMOVE]:(state, {payload:id}) => ({
 			...state,
-			todos :state.todos.filter(todo => todo.id !== action.payload),
+			todos :state.todos.filter(todo => todo.id !== id),
 		}),
 	},
+	initialState,
 );
 
 
